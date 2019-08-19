@@ -3,34 +3,32 @@ package request
 import (
 	"github.com/fearlesshyena/djtwebserver/platform"
 	"log"
-	"math/big"
 )
 
-type ContractReq struct {
-	Contract string  `uri:"contract" binding:"required"`
-	TokenId  big.Int `uri:"tokenid" binding:"required"`
-}
-
-type GetOwner interface {
-	Get(ContractReq) (Token, error)
-}
-
-type Token struct {
-	Owner string `json:"owner"`
+type GetTokenOwner interface {
+	GetOwner(platform.ContractToken) (TokenOwner, error)
+	platform.TokenExists
 }
 
 type TokenOwner struct {
+	Owner string `json:"owner"`
+}
+
+type Token struct {
 	platform.Repo
 }
 
-func (t *TokenOwner) Get(conreq ContractReq) (Token, error) {
-	owner, err := t.Repo.Get(conreq.Contract, conreq.TokenId)
-	if err != nil {
+func (t *Token) GetOwner(contoken platform.ContractToken) (TokenOwner, error) {
+	if owner, err := t.Repo.GetOwner(contoken); err != nil {
 		log.Fatalln(err)
-		return Token{}, err
+		return TokenOwner{}, err
 	} else {
-		return Token{
+		return TokenOwner{
 			Owner: owner,
 		}, nil
 	}
+}
+
+func (t *Token) TokenExists(contoken platform.ContractToken) bool {
+	return t.Repo.TokenExists(contoken)
 }

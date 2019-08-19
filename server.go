@@ -11,13 +11,14 @@ import (
 func main() {
 	router := gin.Default()
 
-	repo, err := etherium.Connect("https://ropsten.infura.io")
-	if err != nil {
+	if repo, err := etherium.Connect("https://ropsten.infura.io"); err != nil {
 		log.Fatalln("Error while connecting to the repository", err)
 	} else {
 		router.GET("/", handler.PingGet())
 		router.GET("/ping", handler.PingGet())
-		router.GET("/contracts/:contract/:tokenid/owner", handler.OwnerGet(&request.TokenOwner{Repo: repo}))
+		token := request.Token{Repo: repo}
+		router.GET("/contracts/:contract/:tokenid/owner", handler.OwnerGet(&token))
+		router.GET("/contracts/:contract/:tokenid/transfers", handler.TransferGet(&token))
 
 		log.Fatalln(router.Run(":8080"))
 	}
