@@ -1,29 +1,23 @@
 package main
 
 import (
-	"./token"
-	"fmt"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/fearlesshyena/djtwebserver/httpd/handler"
+	"github.com/fearlesshyena/djtwebserver/platform/owner"
+	"github.com/gin-gonic/gin"
 	"log"
-	"math/big"
 )
 
 func main() {
-	client, err := ethclient.Dial("https://ropsten.infura.io")
-	if err != nil {
-		log.Fatalln(err)
-	}
+	router := gin.Default()
 
-	address := common.HexToAddress("0xcc62564D40C06e2Be1F84287b0d8F6B734c856D30xcc62564D40C06e2Be1F84287b0d8F6B734c856D3")
-	instance, err := token.NewDjtHashToken(address, client)
+	repo, err := owner.New()
 	if err != nil {
-		log.Fatalln(err)
-	}
-	owner, err := instance.OwnerOf(nil, big.NewInt(1))
-	if err != nil {
-		log.Fatalln(err)
-	}
+		log.Fatalln("Error while connecting to the repository", err)
+	} else {
+		router.GET("/", handler.PingGet())
+		router.GET("/ping", handler.PingGet())
+		router.GET("/contracts/:contract/:tokenid/owner", handler.OwnerGet(repo))
 
-	fmt.Println("Token owner is", owner.Hex())
+		log.Fatalln(router.Run(":8080"))
+	}
 }
