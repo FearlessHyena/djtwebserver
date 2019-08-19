@@ -2,14 +2,14 @@ package handler
 
 import (
 	"github.com/fearlesshyena/djtwebserver/platform"
-	"github.com/fearlesshyena/djtwebserver/platform/request"
+	"github.com/fearlesshyena/djtwebserver/platform/repo"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 )
 
 
-func OwnerGet(getter request.GetTokenOwner) gin.HandlerFunc {
+func OwnerGet(getter repo.GetTokenOwner) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var contractreq platform.ContractToken
 		if err := ctx.ShouldBindUri(&contractreq); err != nil {

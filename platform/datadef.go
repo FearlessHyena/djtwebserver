@@ -23,3 +23,14 @@ type ContractToken struct {
 	TokenId  big.Int `uri:"tokenid" binding:"required"`
 }
 
+type CacheTokenTransfer struct {
+	Block uint64 `db:"block"`
+	From  string `db:"from_addr"`
+	To    string `db:"to_addr"`
+}
+
+type Cache interface {
+	GetTransfers(contoken ContractToken) (transfers []CacheTokenTransfer, err error)
+	WriteTransfers(contoken ContractToken, tokentrans []CacheTokenTransfer) (err error)
+}
+
