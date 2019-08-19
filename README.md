@@ -19,7 +19,7 @@ the ERC-721 contract address and the token ID
           PRIMARY KEY(contract_addr, token_id)
       );
     ```
-* Run the main package `server.go`
+* Run the project using `make run-dev`
 
 ## Endpoints for testing
 You can test it [using this contract - 0xcc62564d40c06e2be1f84287b0d8f6b734c856d3](https://ropsten.etherscan.io/address/0xcc62564d40c06e2be1f84287b0d8f6b734c856d3) which is already deployed on Ropsten
