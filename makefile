@@ -1,2 +1,2 @@
 run-dev:
-	go run server.go
+	go run server.go $(args)

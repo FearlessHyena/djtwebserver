@@ -19,7 +19,12 @@ the ERC-721 contract address and the token ID
           PRIMARY KEY(contract_addr, token_id)
       );
     ```
-* Run the project using `make run-dev`
+### Running the project
+* To run using the defaults you can run `make run-dev`
+* To change the defaults you can pass in additional arguments
+```shell script
+make run-dev args='--addr=:8082 --dbconn="user=postgres dbname=mydb" sslmode=disable --eth=https://rinkeby.infura.io'
+```
 
 ## Endpoints for testing
 You can test it [using this contract - 0xcc62564d40c06e2be1f84287b0d8f6b734c856d3](https://ropsten.etherscan.io/address/0xcc62564d40c06e2be1f84287b0d8f6b734c856d3) which is already deployed on Ropsten
@@ -49,8 +54,6 @@ You can test it [using this contract - 0xcc62564d40c06e2be1f84287b0d8f6b734c856d
     * And update the db connection string in `server.go` `main()`
     
 ## TODO (Future Enhancements)
-* Get the etherium network and db connection string programmatically through cmd options
 * Use a websocket to connect to Ropsten and use a subscriber to automatically get notified on transaction events
 * Create the DB schema automatically if it doesn't exist
-* Unit Tests...
-* Better error handling
+* Unit Tests... and some better error handling
